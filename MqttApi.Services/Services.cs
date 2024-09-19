@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MqttApi.Services
@@ -33,8 +34,11 @@ namespace MqttApi.Services
 
             _mqttClient.ApplicationMessageReceivedAsync += e =>
             {
-                var message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                Console.WriteLine($"Message received: {message}");
+                var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
+
+                var receivedMessage = JsonSerializer.Deserialize<Dictionary<string, object>>(payload);
+
+                Console.WriteLine($"Message received: {JsonSerializer.Serialize(receivedMessage)}");
                 return Task.CompletedTask;
             };
 

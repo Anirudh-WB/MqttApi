@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MQTTnet.Client;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,11 +30,15 @@ namespace MqttApi.API.Controllers
                 return BadRequest("Invalid input.");
             }
 
+            var clientCertificate = new X509Certificate2("path/to/client.pfx", "your_cert_password");
+
             // Update MQTT Client Options
             var options = new MqttClientOptionsBuilder()
                 .WithClientId(_mqttOptions.Value.ClientId)
                 .WithTcpServer(dto.Server, dto.Port)
                 .WithCleanSession(false)
+                .WithWillContentType("application/json")
+                .WithTls()
                 .Build();
 
 
@@ -52,23 +58,24 @@ namespace MqttApi.API.Controllers
         }
 
         [HttpPost("publish")]
-        public async Task<IActionResult> PublishMessage(string topic, string message)
+        public async Task<IActionResult> PublishMessage(string topic, [FromBody] object payload)
         {
             if (!_mqttClient.IsConnected)
             {
                 await _mqttClient.ConnectAsync(_mqttOptions.Value);
             }
 
+            var jsonPayload = JsonSerializer.Serialize(payload);
+
             var mqttMessage = new MQTTnet.MqttApplicationMessageBuilder()
                 .WithTopic(topic)
-                .WithPayload(message)
-                //.WithRetainFlag(true)
+                .WithPayload(jsonPayload)
                 .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.AtLeastOnce)
                 .Build();
 
             await _mqttClient.PublishAsync(mqttMessage);
 
-            return Ok(new { Message = "Published successfully", Topic = topic, Payload = message });
+            return Ok(new { Message = "Published successfully", Topic = topic, Payload = jsonPayload });
         }
 
         /*[HttpPost("subscribe")]
