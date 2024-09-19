@@ -30,7 +30,7 @@ namespace MqttApi.API.Controllers
                 return BadRequest("Invalid input.");
             }
 
-            var clientCertificate = new X509Certificate2("path/to/client.pfx", "your_cert_password");
+            var clientCertificate = new X509Certificate2("D:\\Projects\\MqttApi\\MqttApi.API\\Certificates\\MyOpcUaServer.pfx", string.Empty);
 
             // Update MQTT Client Options
             var options = new MqttClientOptionsBuilder()
@@ -38,7 +38,14 @@ namespace MqttApi.API.Controllers
                 .WithTcpServer(dto.Server, dto.Port)
                 .WithCleanSession(false)
                 .WithWillContentType("application/json")
-                .WithTls()
+                .WithTls(new MqttClientOptionsBuilderTlsParameters
+                {
+                    UseTls = true,
+                    Certificates = new List<X509Certificate> { clientCertificate },
+                    //AllowUntrustedCertificates = true, // Set to false in production
+                    //IgnoreCertificateChainErrors = true, // Set to false in production
+                    //IgnoreCertificateRevocationErrors = true // Set to false in production
+                })
                 .Build();
 
 
