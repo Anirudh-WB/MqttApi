@@ -24,7 +24,7 @@ namespace Mqtt.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Subscribe to a topic
-            await _mqttService.SubscribeAsync("test/topic");
+            await _mqttService.SubscribeAsync();
 
             // Handle incoming messages
             _mqttService.GetClient().ApplicationMessageReceivedAsync += e =>

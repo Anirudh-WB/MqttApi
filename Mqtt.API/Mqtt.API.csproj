@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mqtt.DTO\Mqtt.DTO.csproj" />
     <ProjectReference Include="..\Mqtt.Models\Mqtt.Models.csproj" />
     <ProjectReference Include="..\Mqtt.Services\Mqtt.Services.csproj" />
   </ItemGroup>

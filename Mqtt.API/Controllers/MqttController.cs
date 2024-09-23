@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Mqtt.DTO;
+using Mqtt.Models;
 using Mqtt.Services;
 using MQTTnet.Client;
 using System.Security.Cryptography.X509Certificates;
@@ -11,10 +14,12 @@ namespace Mqtt.API.Controllers
     public class MqttController : ControllerBase
     {
         private readonly MqttService _mqttService;
+        private readonly MqttSettings _mqttSettings;
 
-        public MqttController(MqttService mqttService)
+        public MqttController(MqttService mqttService, IOptions<MqttSettings> mqttSettings)
         {
             _mqttService = mqttService;
+            _mqttSettings = mqttSettings.Value;
         }
 
         [HttpPost("publish")]
@@ -25,10 +30,10 @@ namespace Mqtt.API.Controllers
         }
 
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe([FromBody] string topic)
+        public async Task<IActionResult> Subscribe()
         {
-            await _mqttService.SubscribeAsync(topic);
-            return Ok($"Subscribed to {topic}");
+            await _mqttService.SubscribeAsync();
+            return Ok($"Subscribed Successfully");
         }
 
         [HttpPost("unsubscribe")]
@@ -55,41 +60,35 @@ namespace Mqtt.API.Controllers
 
             // Update MQTT Client Options
             var optionsBuilder = new MqttClientOptionsBuilder()
-                .WithClientId(_mqttOptions.Value.ClientId)
-                .WithTcpServer(dto.BrokerAddress, dto.BrokerPort)
-                .WithCleanSession(dto.CleanSession);
+                .WithClientId(_mqttSettings.ClientId)
+                .WithTcpServer(dto.BrokerAddress, dto.BrokerPort);
 
-            if (dto.UseTls)
+            if (dto.UseTls == true)
             {
                 optionsBuilder.WithTls(new MqttClientOptionsBuilderTlsParameters
                 {
                     UseTls = true,
                     Certificates = clientCertificate != null ? new List<X509Certificate> { clientCertificate } : null,
-                    AllowUntrustedCertificates = dto.AllowUntrustedCertificates,
-                    IgnoreCertificateChainErrors = dto.IgnoreCertificateChainErrors,
-                    IgnoreCertificateRevocationErrors = dto.IgnoreCertificateRevocationErrors
                 });
             }
 
             var newOptions = optionsBuilder.Build();
 
             // Disconnect the current client if connected
-            if (_mqttClient.IsConnected)
+            if (_mqttService.GetClient().IsConnected)
             {
-                await _mqttClient.DisconnectAsync();
+                await _mqttService.DisconnectAsync();
             }
 
             // Reconnect with the new options
-            await _mqttClient.ConnectAsync(newOptions);
+            await _mqttService.ConnectAsync(newOptions);
 
-            // Update the options in the service if needed (not directly updating IOptions here)
-            _mqttOptions.Value.BrokerAddress = dto.BrokerAddress;
-            _mqttOptions.Value.BrokerPort = dto.BrokerPort;
-            _mqttOptions.Value.UseTls = dto.UseTls;
-            // Update any other properties from the DTO as necessary
+            // Update the options in the service if needed
+            _mqttSettings.BrokerAddress = dto.BrokerAddress;
+            _mqttSettings.BrokerPort = dto.BrokerPort.Value;
+            //_mqttSettings.UseTls = dto.UseTls.Value;
 
             return Ok("MQTT client settings updated and reconnected.");
         }
-
     }
 }

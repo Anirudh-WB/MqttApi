@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.API", "Mqtt.API\Mqtt.API.csproj", "{0232D227-4CA3-4728-BC28-7F92074F281E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mqtt.API", "Mqtt.API\Mqtt.API.csproj", "{0232D227-4CA3-4728-BC28-7F92074F281E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.Services", "Mqtt.Services\Mqtt.Services.csproj", "{BBF9B8B5-404B-4879-9985-93844A8D518D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mqtt.Services", "Mqtt.Services\Mqtt.Services.csproj", "{BBF9B8B5-404B-4879-9985-93844A8D518D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.Models", "Mqtt.Models\Mqtt.Models.csproj", "{FE1413A1-C414-46AB-A70C-22C032D7F826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mqtt.Models", "Mqtt.Models\Mqtt.Models.csproj", "{FE1413A1-C414-46AB-A70C-22C032D7F826}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mqtt.DTO", "Mqtt.DTO\Mqtt.DTO.csproj", "{4822DE43-D26B-46FE-B73E-138E1CC3D7F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{FE1413A1-C414-46AB-A70C-22C032D7F826}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE1413A1-C414-46AB-A70C-22C032D7F826}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE1413A1-C414-46AB-A70C-22C032D7F826}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4822DE43-D26B-46FE-B73E-138E1CC3D7F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4822DE43-D26B-46FE-B73E-138E1CC3D7F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4822DE43-D26B-46FE-B73E-138E1CC3D7F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4822DE43-D26B-46FE-B73E-138E1CC3D7F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

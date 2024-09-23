@@ -24,13 +24,15 @@ namespace Mqtt.Services
             _mqttClient = new MqttFactory().CreateManagedMqttClient();
         }
 
-        public async Task ConnectAsync()
+        public async Task ConnectAsync(MqttClientOptions options)
         {
             try
             {
                 if (!_mqttClient.IsConnected)
                 {
-                    await _mqttClient.StartAsync(_managedOptions);
+                    await _mqttClient.StartAsync(new ManagedMqttClientOptionsBuilder()
+                        .WithClientOptions(options)
+                        .Build());
                     Console.WriteLine("Connected to the MQTT broker.");
                 }
                 else
@@ -43,6 +45,7 @@ namespace Mqtt.Services
                 Console.WriteLine($"Error connecting to MQTT broker: {ex.Message}");
             }
         }
+
 
         public async Task DisconnectAsync()
         {
@@ -69,16 +72,16 @@ namespace Mqtt.Services
             await _mqttClient.EnqueueAsync(message);
         }
 
-        public async Task SubscribeAsync(string topic)
+        public async Task SubscribeAsync()
         {
             if (!_mqttClient.IsConnected)
             {
-                await ConnectAsync(); // Ensure client is connected
+                await ConnectAsync(_managedOptions.ClientOptions); // Ensure client is connected
             }
 
-            var topicFilter = new MqttTopicFilterBuilder().WithTopic(topic).Build();
+            var topicFilter = new MqttTopicFilterBuilder().WithTopic(_mqttSettings.Topic).Build();
             await _mqttClient.SubscribeAsync(new List<MqttTopicFilter> { topicFilter });
-            Console.WriteLine($"Subscribed to topic: {topic}");
+            Console.WriteLine($"Subscribed to topic: {_mqttSettings.Topic}");
         }
 
         public async Task UnsubscribeAsync(string topic)

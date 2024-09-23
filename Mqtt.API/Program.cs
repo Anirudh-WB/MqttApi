@@ -14,6 +14,9 @@ builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MQTTS
 
 builder.Services.AddHostedService<Services>();
 
+builder.Services.AddSingleton(sp =>
+    sp.GetRequiredService<IOptions<MqttSettings>>().Value);
+
 // Register MqttService with MqttSettings as a singleton
 builder.Services.AddSingleton<MqttService>(sp =>
 {
