@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Mqtt.Services\Mqtt.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Certificates\" />
-  </ItemGroup>
-
 </Project>

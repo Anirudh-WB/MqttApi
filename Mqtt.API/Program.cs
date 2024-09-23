@@ -26,7 +26,7 @@ builder.Services.AddSingleton<MqttService>(sp =>
     var optionsBuilder = new MqttClientOptionsBuilder()
         .WithClientId(mqttSettings.ClientId)
         .WithTcpServer(mqttSettings.BrokerAddress, mqttSettings.BrokerPort)
-        .WithCleanSession();
+        .WithCleanSession(false);
 
     if (mqttSettings.UseTls)
     {
@@ -41,7 +41,7 @@ builder.Services.AddSingleton<MqttService>(sp =>
 
         optionsBuilder.WithTls(tlsOptions =>
         {
-            tlsOptions.UseTls = true;
+            tlsOptions.UseTls = mqttSettings.UseTls;
             tlsOptions.Certificates = certificates;
             tlsOptions.AllowUntrustedCertificates = true; // Set to false in production
             tlsOptions.CertificateValidationHandler = _ => true; // Bypass validation for testing
