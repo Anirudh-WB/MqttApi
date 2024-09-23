@@ -30,9 +30,9 @@ namespace Mqtt.Services
             _mqttService.GetClient().ApplicationMessageReceivedAsync += e =>
             {
                 var payload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-                //var receivedMessage = JsonSerializer.Deserialize<Dictionary<string, object>>(payload);
-                //Console.WriteLine($"Message received: {JsonSerializer.Serialize(receivedMessage)}");
-                Console.WriteLine($"Message received: {payload}");
+                var receivedMessage = JsonSerializer.Deserialize<Dictionary<string, object>>(payload);
+                Console.WriteLine($"Message received: {JsonSerializer.Serialize(receivedMessage)}");
+                //Console.WriteLine($"Message received: {payload}");
                 return Task.CompletedTask;
             };
 

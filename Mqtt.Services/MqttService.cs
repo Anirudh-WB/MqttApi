@@ -1,10 +1,12 @@
-﻿using Mqtt.Models;
+﻿using Mqtt.DTO;
+using Mqtt.Models;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Mqtt.Services
@@ -60,8 +62,10 @@ namespace Mqtt.Services
             }
         }
 
-        public async Task PublishAsync(string payload)
+        public async Task PublishAsync(PublishDto publishDto)
         {
+            var payload = JsonSerializer.Serialize(publishDto);
+
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(_mqttSettings.Topic)
                 .WithPayload(payload)

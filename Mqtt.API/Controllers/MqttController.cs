@@ -23,9 +23,9 @@ namespace Mqtt.API.Controllers
         }
 
         [HttpPost("publish")]
-        public async Task<IActionResult> Publish([FromBody] string message)
+        public async Task<IActionResult> Publish([FromBody] PublishDto publishDto)
         {
-            await _mqttService.PublishAsync(message);
+            await _mqttService.PublishAsync(publishDto);
             return Ok("Message published");
         }
 
