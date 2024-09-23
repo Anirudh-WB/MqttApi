@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MqttApi.IServices
+namespace Mqtt.DTO
 {
-    internal class IServices
+    internal class MqttSettingsUpdateDto
     {
     }
 }

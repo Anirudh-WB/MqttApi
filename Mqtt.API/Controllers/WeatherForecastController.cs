@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace MqttApi.API.Controllers
+namespace Mqtt.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

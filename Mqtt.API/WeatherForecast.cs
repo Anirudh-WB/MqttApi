@@ -1,4 +1,4 @@
-namespace MqttApi.API
+namespace Mqtt.API
 {
     public class WeatherForecast
     {

@@ -4,16 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="MQTTnet" Version="4.3.7.1207" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.7.1207" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MqttApi.Services\MqttApi.Services.csproj" />
+    <ProjectReference Include="..\Mqtt.Models\Mqtt.Models.csproj" />
+    <ProjectReference Include="..\Mqtt.Services\Mqtt.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
